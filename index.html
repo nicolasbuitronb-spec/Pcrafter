@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PCrafter — Arma tu PC con IA y piezas compatibles</title>
+    <meta name="description" content="Arma tu PC con inteligencia artificial: piezas compatibles verificadas, vista 3D y, si lo pides, precios actuales de tiendas reconocidas con enlace y hora de consulta.">
+    <meta name="theme-color" content="#F1F5F9">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PCrafter">
+    <meta property="og:title" content="PCrafter — Arma tu PC con piezas que sí son compatibles">
+    <meta property="og:description" content="La IA elige las piezas, verifica socket, memoria y consumo, y te muestra tu PC en 3D.">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:image" content="icon-512.png">
+    <meta property="og:image:alt" content="Isologo de PCrafter: una letra P cuyo contador es un chip con pines">
+    <meta name="twitter:card" content="summary">
+    <meta name="author" content="Juan Diego Ruiz Correa y Nicolás Buitrón Bolaños">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Tipografías: Bricolage Grotesque (títulos) y Figtree (texto). Requieren internet. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Precarga de Firebase: baja en paralelo en vez de esperar a app.js -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js">
+    <link rel="modulepreload" href="config.js">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Arranque mínimo: evita el parpadeo del login, activa el menú móvil y explica fallos de carga -->
+    <script src="boot.js"></script>
+</head>
+<body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <noscript><p class="noscript">PCrafter necesita JavaScript para funcionar. Actívalo en tu navegador e intenta de nuevo.</p></noscript>
+
+    <!-- ==========================================================
+         1. SITIO: inicio, cómo funciona, precios, preguntas, pie
+         ========================================================== -->
+    <div id="loginView" class="view site">
+
+        <header class="site-nav">
+            <div class="wrap nav-row">
+                <a class="wordmark" href="/" aria-label="PCrafter, inicio">
+                    <svg class="wordmark-logo" aria-hidden="true" focusable="false"><use href="icons.svg#logo"/></svg>
+                    <span>PCrafter</span>
+                </a>
+                <nav id="menu-principal" class="nav-links" aria-label="Principal">
+                    <a href="#como-funciona">Cómo funciona</a>
+                    <a href="#precios">Precios</a>
+                    <a href="#preguntas">Preguntas</a>
+                    <a href="/creditos">Créditos</a>
+                    <a href="/contacto">Contacto</a>
+                </nav>
+                <div class="nav-actions">
+                    <button type="button" id="btnNavLogin" class="btn btn-ghost">Entrar</button>
+                    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="menu-principal">
+                        <svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-menu"/></svg>
+                        <span class="sr-only">Abrir menú</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="contenido">
+            <section class="hero">
+                <div class="wrap hero-grid">
+
+                    <div class="hero-copy">
+                        <h1>Arma tu PC con piezas que sí son compatibles</h1>
+                        <p class="lead">
+                            Cuéntanos tu presupuesto en pesos y para qué lo usarás. La IA elige las piezas, verifica socket, memoria y consumo, y te muestra tu PC en 3D.
+                        </p>
+
+                        <button type="button" id="btnGoogleLogin" class="btn btn-google">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"/>
+                                <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"/>
+                                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"/>
+                            </svg>
+                            Continuar con Google
+                        </button>
+                        <p id="loginError" class="form-error hidden" role="alert"></p>
+
+                        <p class="muted small">
+                            Entras solo con tu cuenta de Google.
+                            <a href="https://accounts.google.com/signin/recovery" target="_blank" rel="noopener noreferrer">¿Problemas para entrar?</a>
+                        </p>
+                    </div>
+
+                    <!-- Ejemplo armado con el catálogo verificado del servidor -->
+                    <section class="build-card" aria-label="Ejemplo de PC armado">
+                        <header class="build-head">
+                            <div>
+                                <h2>PC para programar y jugar en 1080p</h2>
+                                <p class="muted small">Ejemplo del catálogo verificado</p>
+                            </div>
+                            <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                        </header>
+
+                        <ul class="parts">
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">AMD Ryzen 5 7600</strong>
+                            <span class="part-sub"><span class="part-type">Procesador</span><span class="part-meta">Socket AM5</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">MSI PRO B650M-P</strong>
+                            <span class="part-sub"><span class="part-type">Placa base</span><span class="part-meta">AM5, DDR5, Micro-ATX</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">Corsair Vengeance 32 GB</strong>
+                            <span class="part-sub"><span class="part-type">Memoria RAM</span><span class="part-meta">DDR5 6000 MHz</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">AMD Radeon RX 6600 8 GB</strong>
+                            <span class="part-sub"><span class="part-type">Tarjeta gráfica</span><span class="part-meta">132 W</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">Kingston NV2 1 TB</strong>
+                            <span class="part-sub"><span class="part-type">Almacenamiento</span><span class="part-meta">M.2 NVMe PCIe 4.0</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">Corsair CX650</strong>
+                            <span class="part-sub"><span class="part-type">Fuente</span><span class="part-meta">650 W, 80+ Bronze</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">Cooler Master Hyper 212 Black</strong>
+                            <span class="part-sub"><span class="part-type">Refrigeración</span><span class="part-meta">Soporta AM4 y AM5</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                    <li class="part">
+                        <div class="part-main">
+                            <strong class="part-name">Iceberg Glacius V2 Mesh</strong>
+                            <span class="part-sub"><span class="part-type">Chasis</span><span class="part-meta">ATX y Micro-ATX</span></span>
+                        </div>
+                        <span class="tag tag-ok"><svg class="i-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Compatible</span>
+                    </li>
+                        </ul>
+
+                        <footer class="build-foot">
+                            <div class="power">
+                                <div class="power-line"><span>Consumo estimado</span><strong>320 W de 650 W</strong></div>
+                                <div class="meter" aria-hidden="true"><div class="meter-fill w-49"></div></div>
+                            </div>
+                            <div class="total"><span>Total de referencia</span><strong>$3.820.000 COP</strong></div>
+                        </footer>
+                    </section>
+                </div>
+            </section>
+
+            <section class="section" id="como-funciona">
+                <div class="wrap">
+                    <h2 class="section-title">Cómo funciona</h2>
+                    <ol class="steps">
+                        <li>
+                            <span class="step-i"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chat"/></svg></span>
+                            <h3>1. Cuéntanos qué necesitas</h3>
+                            <p>Tu presupuesto en pesos, para qué usarás el PC y las piezas que ya tengas.</p>
+                        </li>
+                        <li>
+                            <span class="step-i"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chip"/></svg></span>
+                            <h3>2. La IA arma y verifica</h3>
+                            <p>Elige piezas del catálogo, revisa socket, memoria, tamaño y consumo, y te muestra el resultado en 3D.</p>
+                        </li>
+                        <li>
+                            <span class="step-i"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-tag"/></svg></span>
+                            <h3>3. Compara precios si quieres</h3>
+                            <p>Cuando lo pidas, consulta tiendas reconocidas y te muestra el menor precio con enlace y hora de consulta.</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section section-alt" id="precios">
+                <div class="wrap split">
+                    <div>
+                        <h2 class="section-title">Precios con fuente, enlace y hora</h2>
+                        <p class="lead">PCrafter nunca inventa un precio. Solo los consulta cuando tú lo pides, y cada uno viene de una página de tienda que puedes abrir.</p>
+                    </div>
+                    <ul class="checks">
+                        <li>Tiendas reconocidas: Mercado Libre, Amazon, Alkosto, Ktronix, Newegg y otras.</li>
+                        <li>Cada precio trae la tienda, el enlace directo y la hora en que se consultó.</li>
+                        <li>El servidor vuelve a leer la página de la tienda y corrige el precio si la IA se equivocó.</li>
+                        <li>Si no puede confirmar un precio, no lo muestra.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section" id="preguntas">
+                <div class="wrap faq-wrap">
+                    <h2 class="section-title">Preguntas frecuentes</h2>
+                    <div class="faq">
+                        <details>
+                            <summary><span>¿Es gratis?</span><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chevron"/></svg></summary>
+                            <p>Sí. Entras con tu cuenta de Google y tienes un límite diario de mensajes para mantener el servicio estable.</p>
+                        </details>
+                        <details>
+                            <summary><span>¿Cómo sabe si las piezas son compatibles?</span><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chevron"/></svg></summary>
+                            <p>La IA revisa socket, tipo de memoria, formato de placa y chasis, soporte del cooler y el consumo frente a la capacidad de la fuente. Es una guía confiable, pero confirma con el fabricante antes de comprar.</p>
+                        </details>
+                        <details>
+                            <summary><span>¿Por qué un precio puede ser distinto cuando abro la tienda?</span><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chevron"/></svg></summary>
+                            <p>Las tiendas cambian precios, ofertas y stock varias veces al día, y el envío o los impuestos varían según tu ciudad. Por eso cada precio muestra la hora de consulta y el enlace directo para que lo confirmes.</p>
+                        </details>
+                        <details>
+                            <summary><span>¿Guardan mis conversaciones?</span><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chevron"/></svg></summary>
+                            <p>No guardamos tu historial en nuestro servidor. La conversación vive en tu navegador y se envía a la IA solo para responderte. Más detalles en la <a href="privacidad">política de privacidad</a>.</p>
+                        </details>
+                        <details>
+                            <summary><span>¿PCrafter vende piezas?</span><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-chevron"/></svg></summary>
+                            <p>No. Es una guía independiente y no tiene relación con Amazon, Mercado Libre ni ninguna otra tienda.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-foot">
+            <div class="wrap foot-row">
+                <div class="foot-brand">
+                    <a class="wordmark" href="/" aria-label="PCrafter, inicio">
+                        <svg class="wordmark-logo" aria-hidden="true"><use href="icons.svg#logo"/></svg>
+                        <span>PCrafter</span>
+                    </a>
+                    <p class="small muted">Proyecto independiente de Juan Diego Ruiz Correa y Nicolás Buitrón Bolaños.</p>
+                </div>
+                <nav class="foot-links small" aria-label="Pie de página">
+                    <a href="/privacidad"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-shield"/></svg>Privacidad</a>
+                    <a href="/terminos"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-doc"/></svg>Términos</a>
+                    <a href="/creditos"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-image"/></svg>Créditos y licencias</a>
+                    <a href="/contacto"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-mail"/></svg>Contacto</a>
+                    <a href="/contacto#apoyar"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-heart"/></svg>Apoyar el proyecto</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==========================================================
+         2. APP: chat + tu PC
+         ========================================================== -->
+    <div id="appView" class="view app" hidden>
+
+        <aside class="sidebar" id="sidebar" aria-label="Menú de la aplicación">
+            <div class="sidebar-top">
+                <div class="wordmark">
+                    <svg class="wordmark-logo" aria-hidden="true"><use href="icons.svg#logo"/></svg>
+                    <span>PCrafter</span>
+                    <button type="button" class="btn-icon sidebar-close" id="btnCloseSidebar" aria-label="Cerrar menú">
+                        <svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-close"/></svg>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" id="btnNewChat">Nueva conversación</button>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="usage">
+                    <div class="usage-line"><span>Mensajes de hoy</span><strong id="usageCount">0 / 20</strong></div>
+                    <div class="meter" aria-hidden="true"><div class="meter-fill" id="usageFill"></div></div>
+                </div>
+
+                <div class="support small">
+                    <a href="/contacto#apoyar" target="_blank" rel="noopener noreferrer">Apoyar a PCrafter</a>
+                    <a href="/privacidad" target="_blank" rel="noopener noreferrer">Privacidad</a>
+                    <a href="/terminos" target="_blank" rel="noopener noreferrer">Términos</a>
+                    <a href="/creditos" target="_blank" rel="noopener noreferrer">Créditos</a>
+                </div>
+
+                <div class="user">
+                    <div class="avatar" id="userAvatar" aria-hidden="true">U</div>
+                    <div class="user-name" id="userNameDisplay">Sesión no iniciada</div>
+                    <button type="button" class="btn-text" id="btnLogout">Salir</button>
+                </div>
+            </div>
+        </aside>
+        <div class="scrim" id="scrim"></div>
+
+        <main class="workspace" id="contenido-app">
+            <h1 class="sr-only">Asistente de PCrafter para armar tu PC</h1>
+            <header class="topbar">
+                <button type="button" class="btn-icon menu-btn" id="btnOpenSidebar" aria-label="Abrir menú">
+                    <svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-menu"/></svg>
+                </button>
+                <div class="tabs" role="group" aria-label="Vista de la pantalla">
+                    <button type="button" class="tab active" data-tab="chat" aria-pressed="true">Chat</button>
+                    <button type="button" class="tab" data-tab="build" aria-pressed="false">Tu PC</button>
+                </div>
+            </header>
+
+            <div class="panes" id="panes" data-tab="chat">
+
+                <!-- CHAT -->
+                <section class="chat" id="chatZone" aria-labelledby="chat-title">
+                    <h2 class="sr-only" id="chat-title">Conversación</h2>
+                    <div class="messages" id="chatMessages">
+                        <div class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Mensajes de la conversación"></div>
+                    </div>
+
+                    <form class="composer" id="chatForm">
+                        <div class="composer-box">
+                            <div class="file-chip hidden" id="fileChip">
+                                <span id="fileName"></span>
+                                <button type="button" class="btn-icon" id="btnRemoveFile" aria-label="Quitar archivo">
+                                    <svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-close"/></svg>
+                                </button>
+                            </div>
+                            <div class="composer-row">
+                                <input type="file" id="fileUpload" class="sr-only" accept=".pdf,.docx">
+                                <label for="fileUpload" class="btn-icon attach" title="Adjuntar PDF o Word (.docx)">
+                                    <svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-clip"/></svg>
+                                    <span class="sr-only">Adjuntar archivo PDF o Word</span>
+                                </label>
+                                <textarea id="messageInput" rows="1" placeholder="Escribe tu presupuesto o tu duda..." aria-label="Mensaje"></textarea>
+                                <button type="submit" class="btn btn-primary" id="btnSend">Enviar</button>
+                            </div>
+                        </div>
+                        <p class="composer-note small muted">Los precios solo se consultan cuando tú lo pides.</p>
+                    </form>
+                </section>
+
+                <!-- TU PC: solo aparece cuando la IA responde con un armado -->
+                <aside class="build" id="pcBuilderZone" aria-label="Tu PC armado">
+                    <div class="viewer" id="viewer" role="group" aria-label="Vista en 3D de tu PC">
+                        <div class="viewer-floor"></div>
+                        <div class="viewer-stage" tabindex="0" role="img" aria-label="Modelo 3D de tu PC. Con el teclado: flechas para girar, más y menos para acercar o alejar, la tecla E para separar las piezas."><div class="world" aria-hidden="true"></div></div>
+                        <div class="viewer-tip" hidden></div>
+                        <div class="viewer-ctrl">
+                            <button type="button" class="vbtn" data-zoom="out" aria-label="Alejar"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-minus"/></svg></button>
+                            <button type="button" class="vbtn" data-zoom="in" aria-label="Acercar"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-plus"/></svg></button>
+                            <button type="button" class="vbtn vbtn-text" data-zoom="explode" aria-pressed="false"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-cube"/></svg><span>Vista explosionada</span></button>
+                            <button type="button" class="vbtn vbtn-text" data-zoom="reset"><svg class="i" aria-hidden="true" focusable="false"><use href="icons.svg#i-reset"/></svg><span>Reiniciar vista</span></button>
+                        </div>
+                    </div>
+
+                    <section class="build-card" id="buildCard">
+                        <header class="build-head">
+                            <div>
+                                <h2 id="buildTitle">Tu PC armado</h2>
+                                <p class="muted small" id="buildNote"></p>
+                            </div>
+                            <span class="tag tag-idle" id="compatibilityStatus">Sin armar</span>
+                        </header>
+
+                        <ul class="parts" id="buildList"></ul>
+
+                        <footer class="build-foot">
+                            <div class="power">
+                                <div class="power-line"><span>Consumo estimado</span><strong id="powerText">—</strong></div>
+                                <div class="meter" aria-hidden="true"><div class="meter-fill" id="powerFill"></div></div>
+                            </div>
+                            <div class="total hidden" id="refBox"><span>Total de referencia</span><strong id="refTotal"></strong></div>
+                        </footer>
+                        <div class="price-now hidden" id="priceTotal"></div>
+                    </section>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mensaje de bienvenida (se reutiliza en "Nueva conversación") -->
+    <template id="welcomeTpl">
+        <div class="msg msg-ai welcome">
+            <div class="avatar avatar-ai" aria-hidden="true"><svg><use href="icons.svg#logo"/></svg></div>
+            <div class="content">
+                <h2>¿Qué PC quieres armar?</h2>
+                <p>Dime tu presupuesto en pesos y el uso (estudio, programación, juegos o diseño). También puedo analizar un PDF o Word, explicar código o buscar enlaces seguros.</p>
+                <div class="chips">
+                    <button type="button" class="chip">Armar PC para programar y jugar a 1440p</button>
+                    <button type="button" class="chip">Verificar si Ryzen 5 9600X sirve con RAM DDR4</button>
+                    <button type="button" class="chip">Analizar un documento PDF</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
